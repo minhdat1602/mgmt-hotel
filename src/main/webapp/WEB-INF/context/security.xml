@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+            
+    <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
+    	<intercept-url pattern="/quan-tri/phan-cong**" access="hasAnyRole('receptionist','staff','system','personnel','accountant')" />
+    	<intercept-url pattern="/quan-tri/tinh-hinh-dat-phong**" access="hasAnyRole('receptionist','staff','system','personnel','accountant')" />
+    	
+    	<intercept-url pattern="/quan-tri**" access="hasAnyRole('system')" />
+    	
+    	<intercept-url pattern="/quan-tri/nang-cap-booking**" access="hasAnyRole('receptionist')" />
+    	<intercept-url pattern="/quan-tri/phong**" access="hasAnyRole('receptionist')" />
+    	<intercept-url pattern="/quan-tri/dich-vu**" access="hasAnyRole('receptionist')" />
+    	<intercept-url pattern="/quan-tri/booking**" access="hasAnyRole('receptionist')" />
+    	<intercept-url pattern="/quan-tri/check-in**" access="hasAnyRole('receptionist')" />
+    	<intercept-url pattern="/quan-tri/check-out**" access="hasAnyRole('receptionist')" />	
+    	<intercept-url pattern="/quan-tri/huy-booking**" access="hasAnyRole('receptionist')" />
+    	<intercept-url pattern="/quan-tri/doi-phong**" access="hasAnyRole('receptionist')" /> 	
+    	<intercept-url pattern="/quan-tri/gia-han-booking**" access="hasAnyRole('receptionist')" />  	
+    	<intercept-url pattern="/quan-tri/loai-phong/danh-sach**" access="hasAnyRole('receptionist')" />
+    	
+    	
+		<intercept-url pattern="/quan-tri/nguoi-dung/**" access="hasAnyRole('personnel')" />
+		<intercept-url pattern="/quan-tri/khach-hang/**" access="hasAnyRole('personnel')" />
+    	<intercept-url pattern="/quan-tri/doanh-so/**" access="hasAnyRole('accountant')" />
+    	
+    	
+    	
+    	
+    	<access-denied-handler error-page="/accessDenied" />
+        <form-login  login-page="/dang-nhap"
+                     username-parameter="j_username"
+                     password-parameter="j_password"
+                     login-processing-url="/j_spring_security_check"
+                     authentication-success-handler-ref="customSuccessHandler"
+                     authentication-failure-url="/dang-nhap?incorrectAccount"/>
+        <logout delete-cookies="JSESSIONID"/>
+    </http>
+    
+    <authentication-manager >
+        <authentication-provider user-service-ref="customUserDetailsService">
+        		
+        </authentication-provider>
+    </authentication-manager>
+    
+
+    <beans:bean id="customUserDetailsService" class="com.chondo.service.impl.CustomUserDetailsService" />
+    <beans:bean id="customSuccessHandler" class="com.chondo.security.CustomSuccessHandler" />
+    
+</beans:beans>
